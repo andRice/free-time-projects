@@ -37,15 +37,25 @@ class Matches:
     def __init__(self,WebPage,keywords):
         self.words = keywords
         self.matches = {}
-        _FindPageMatches(WebPage)
-        #self.pages =  # List of all the results pages
-
+        self.page = WebPage
+        
+    #_FindPageMatches is probably not needed this version
     def _FindPageMatches(self,webPage):
         "Given a web page object and a list of words, fills self.matches member"
         for para in WebPage.paragraphs:
             self._ParagraphMatches(para)
 
+    def FindMatchesFor(self,keyword):
+        "Creates entry in self.matches for the keyword passed"
+        #CAUTION: Clears the dictionary before looking for matches
+        self.matches[keyword] = []
+        for para in self.page.paragraphs:
+            for sen in para.sentances:
+                if keyword in sentance:
+                    self.matches[keyword].append(sen)
 
+
+    #_FindParagraphMatches is probably not needed this version
     def _ParagraphMatches(self,paragraph):
         "Searches a Paragraph object for sentances that match the keyword"
         self.matches[paragraph] = []
