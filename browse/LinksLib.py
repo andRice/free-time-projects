@@ -65,8 +65,10 @@ class ResultsPage:
         #Access the actual link in a tag by doing a['href']
         self.urls = []
         self._GenUrls()
-        
-        
+        self.pages = []
+        self.badLinks = []
+        self._MakePageObjects()
+
     def _GetATags(self):
         for tag in self.hTags:
             self.aTags.append(tag.a)
@@ -80,7 +82,17 @@ class ResultsPage:
             temp = tag['href'][7:] #Urls have a prefix from google searches
             temp = temp[:googleBullshitStart] #Google puts url encoded data after actual link, cuts that off
             self.urls.append(temp) # to prevent always getting 404
-    
+
+    def _MakePageObjects(self):
+            for link in self.urls:
+                try:
+                    c = requests.get(link)
+                    self.pages.append(WebPage(c))
+                except:
+                    print(link,"is a bad link!")
+                    self.badLinks.append(link)
+                    continue
+                
     
 def PerformSearch(wordString):
     
@@ -90,4 +102,5 @@ def PerformSearch(wordString):
     result = ResultsPage(r)
     return result
     
-    
+ 
+
