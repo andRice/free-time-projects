@@ -31,7 +31,7 @@ class WebPage:
         the 
         METHOD: Matches(self,keyWords)
             * Returns a dictionary of the sentances that contain the keyword passed
-                * Dict format[paragraph(int)]:"Sentance"(string)
+                
     """
     def __init__(self,pageRequest):
         self.url = pageRequest.url
@@ -83,10 +83,10 @@ class ResultsPage:
     def _GenUrls(self):# Fills the Urlsout from 
         # CHECK THIS IF THE LINKS ARE GENERATING 404 RESPONSES, google likes to play games like that
             # May need to use a search to generate the index but it will probably fail if the website uses PHP/Ampersand regex
-        googleBullshitStart = -83
+        googleGibberishStart = -83
         for tag in self.aTags:
             temp = tag['href'][7:] #Urls have a prefix from google searches
-            temp = temp[:googleBullshitStart] #Google puts url encoded data after actual link, cuts that off
+            temp = temp[:googleGibberishStart] #Google puts url encoded data after actual link, cuts that off
             self.urls.append(temp) # to prevent always getting 404
 
     def _MakePageObjects(self):
