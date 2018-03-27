@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 #As of 3/21, ResultsPage succesfully generates list of urls that generate valid (200) responses
-    # If broken check the location of the google garbage at the end of links from h3.1[href][x]
+    # If broken check the location of the google garbage at the end of links from h3.[href][x]
 
 #**********HIGH LEVEL OVERVIEW*****************
 #   -Create request for google seach page with correct query
@@ -24,6 +24,36 @@ class Paragraph:
         for i in self.words.split("."):
             if len(i):
                 self.sentances.append(i)
+
+
+class Matches:
+    """
+        PLAN: Create a Matches object for each webpage
+            * structure of self.matches: self.matches[paragraph]-->sentances
+                sentances will be the sentances that contain the match for that word
+    PASS: A webpage object from the LinksLib library
+    
+    """
+    def __init__(self,WebPage,keywords):
+        self.words = keywords
+        self.matches = {}
+        _FindPageMatches(WebPage)
+        #self.pages =  # List of all the results pages
+
+    def _FindPageMatches(self,webPage):
+        "Given a web page object and a list of words, fills self.matches member"
+        for para in WebPage.paragraphs:
+            self._ParagraphMatches(para)
+
+
+    def _ParagraphMatches(self,paragraph):
+        "Searches a Paragraph object for sentances that match the keyword"
+        self.matches[paragraph] = []
+        for sen in paragraph.sentances:
+            if (keyword in sen):
+                self.matches[paragraph].append(sen)
+
+
 
 class WebPage:
     """
