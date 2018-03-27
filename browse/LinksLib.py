@@ -22,7 +22,8 @@ class Paragraph:
             
     def _MakeSentances(self):
         for i in self.words.split("."):
-            self.sentances.append(i)
+            if len(i):
+                self.sentances.append(i)
 
 class WebPage:
     """
@@ -33,12 +34,15 @@ class WebPage:
                 * Dict format[paragraph(int)]:"Sentance"(string)
     """
     def __init__(self,pageRequest):
+        self.url = pageRequest.url
         self.bs = BeautifulSoup(pageRequest.text,"lxml")
         self.pTags = self.bs.find_all("p")
         self._CleanPtags()
-        self.paragraphs = []
+        self._paragraphs = []
         self._FillParagraphsList()
-        
+        self.paragraphs = []
+        self._MakeParagraphs()
+
     def _CleanPtags(self):
     #Makes sure all the tags have information in them
         newList = []
@@ -51,9 +55,11 @@ class WebPage:
         paraList = []
         for tag in self.pTags:
             paraList.append(tag.text)
-        self.paragraphs = paraList
+        self._paragraphs = paraList
         
-        
+    def _MakeParagraphs(self):
+        for para in self._paragraphs:
+            self.paragraphs.append(Paragraph(para))
         
 class ResultsPage:
     def __init__(self,request):
@@ -84,12 +90,14 @@ class ResultsPage:
             self.urls.append(temp) # to prevent always getting 404
 
     def _MakePageObjects(self):
+            i = 0
             for link in self.urls:
                 try:
                     c = requests.get(link)
                     self.pages.append(WebPage(c))
                 except:
-                    print(link,"is a bad link!")
+                    i+= 1
+                    print(link,"is a bad link!("+str(i)+" total)")
                     self.badLinks.append(link)
                     continue
                 
