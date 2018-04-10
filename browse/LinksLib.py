@@ -81,6 +81,15 @@ class WebPage:
         self._FillParagraphsList()
         self.paragraphs = []
         self._MakeParagraphs()
+        self.matches = {}#['word']:Matching Sentance (from Paragraph object)
+
+    def GetMatchesFor(self,phrase):
+        "Adds any matches with the passed phrase to the self.matches dictionary"
+        self.matches[phrase] = []
+        for para in self.paragraphs:
+            for sen in para.sentances:
+                if (phrase.lower() in sen.lower()):
+                    self.matches[phrase].append(sen) 
 
     def _CleanPtags(self):
     #Makes sure all the tags have information in them
@@ -149,6 +158,3 @@ def PerformSearch(wordString):
     r = requests.get(google+searchBase+wordString)
     result = ResultsPage(r)
     return result
-    
- 
-
