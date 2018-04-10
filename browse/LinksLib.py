@@ -2,7 +2,8 @@ import lxml
 import requests
 from bs4 import BeautifulSoup
 
-#As of 3/21, ResultsPage succesfully generates list of urls that generate valid (200) responses
+#As of 4/10, Creates pages based off ResultsPage links and creates paragraphs and sentances
+#TODO: Implement matching
     # If broken check the location of the google garbage at the end of links from h3.[href][x]
 
 #**********HIGH LEVEL OVERVIEW*****************
@@ -62,8 +63,6 @@ class Matches:
         for sen in paragraph.sentances:
             if (keyword in sen):
                 self.matches[paragraph].append(sen)
-
-
 
 class WebPage:
     """
@@ -143,7 +142,8 @@ class ResultsPage:
                 
     
 def PerformSearch(wordString):
-    
+    "Call to perform a search and return a results page based on the passed string."
+    #Make sure string is passed with words concatenated with '+' or google will throw a fit
     google = "http://www.google.com/search?"
     searchBase = "&q="
     r = requests.get(google+searchBase+wordString)
